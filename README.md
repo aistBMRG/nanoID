@@ -21,9 +21,9 @@ mamba create -n nanoid -c conda-forge -c bioconda \
 mamba activate nanoid
 
 # Download and install nanoID
-wget https://github.com/youruser/nanoid/releases/download/v2.2.0/nanoid-2.2.0.tar.gz
-pip install --no-build-isolation --no-deps nanoid-2.2.0.tar.gz
-rm nanoid-2.2.0.tar.gz
+wget https://github.com/youruser/nanoid/releases/download/v0.1.0/nanoid-0.1.0.tar.gz
+pip install --no-build-isolation --no-deps nanoid-0.1.0.tar.gz
+rm nanoid-0.1.0.tar.gz
 ```
 
 ##### Verify installation
