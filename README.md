@@ -1,8 +1,8 @@
 
-## nanoID: Reconstruction of amplicon sequence variants and species-level profiling using long amplicon reads
+## nanoID: Reconstruction of Amplicon Sequence Variants and Species-Level Profiling Using Long Amplicon Reads
 
 
-`nanoID` reconstructs Amplicon Sequence Variants (AVSs) from long-read amplicon sequencing data and is applicable to medium-to-high accuracy reads generated using Oxford Nanopore Technologies (ONT) and PacBio. Its accompanying tool `nanoID_profile` enables species-level profiling by greedy clustering of the ASVs at 99% sequence identity, and robust quantification of the species-level operational taxonomic units (OTUs) using Emu (Expectation–Maximization-based taxonomic Unit profiling).
+`nanoID` enables the reconstruction of Amplicon Sequence Variants (ASVs) from long‑read amplicon sequencing data and is applicable to medium‑ and high‑accuracy reads produced by Oxford Nanopore Technologies (ONT) and PacBio sequencing platforms. The accompanying tool, `nanoID_profile`, supports species‑level profiling through greedy clustering of ASVs at 99% sequence identity, with subsequent quantitative inference of species‑level operational taxonomic units (OTUs) using Emu.
 
 ---
 
@@ -40,26 +40,30 @@ nanoid_profile -h
 ### Quick start
 
 **Basic usage**
+
+Run nanoid on a single sample:
 ```sh
 nanoid -t 12 -i input.fastq -o nanoid
 ```
+This generates per‑sample results in the specified output directory.
 
-For combined analysis of multiple samples, the output of `nanoid` can be written to a single output directory.
+For downstream joint profiling across multiple samples, write all `nanoid` outputs to a single directory.
 
 ```sh
 mkdir nanoid
 
+## Using a shell loop
 for fq in *.fastq; do
     nanoid -t 12 -i "$fq" -o nanoid
 done
 
-## with GNU parallel
-
+## Using GNU Parallel
 parallel -j 4 \
     "nanoid -t 12 -i {} -o nanoid" \
     ::: *.fastq
 ```
 
+Once all samples have been processed, run `nanoid_profile` on the combined output directory.
 ```sh
 nanoid_profile -t 12 -i nanoid -o nanoid_profile
 ```
