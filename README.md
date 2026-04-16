@@ -175,7 +175,12 @@ If parent reinforcement is enabled, accepted assignments update the parent abund
 
 ### Benchmarking/test data
 
-nanoID was tested using publically available sequencing data for Zymo's mock community, with default settings except for Cutadapt.
+We applied `nanoID` to ONT sequencing data (R10.4.1 flowcell, basecalling with [Dorado](https://github.com/nanoporetech/dorado) in super accuracy mode, model sup@5.2.0) for the ZymoBIOMICS Microbial Community DNA Standard (catalog no. D6305), as described by [Riisgaard-Jensen et al.](https://www.biorxiv.org/content/10.64898/2026.02.26.708165v1). Data for replicate 1 was obtained from SRA under accession number [SRR36567714](https://www.ncbi.nlm.nih.gov/sra/?term=SRR36567714). 
+
+```sh
+prefetch SRR36567714
+fasterq-dump SRR36567714
+```
 
 ```sh
 nanoid -t 12 \
