@@ -203,7 +203,7 @@ nanoid_profile -t 8 \
 -o SRR36567714_nanoid_profile \
 --cluster_id 0.99
 ```
-This yielded **9** OTUs, including two ASVs affilitated for .
+This yielded **9** OTUs.
 
 ---
 
