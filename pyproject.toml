@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nanoid"
+dynamic = ["version"]
+description = "ONT amplicon read denoising and quantification"
+readme = "README.md"
+requires-python = ">=3.10"
+
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+
+keywords = ["nanopore", "amplicon", "denoising"]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS :: MacOS X",
+]
+
+dependencies = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "biopython",
+    "joblib",
+    "rapidfuzz",
+    "pyabpoa",
+]
+
+[project.scripts]
+nanoid = "nanoid.nanoid_main:main"
+nanoid_profile = "nanoid.nanoid_profile:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "nanoid._version.__version__" }
+
+[tool.setuptools]
+include-package-data = false
+
