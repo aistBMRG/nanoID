@@ -119,8 +119,6 @@ nanoid_profile -t 12 -i nanoid -o nanoid_profile
 
 ---
 
-#### Brief overview of ConDens
-
 ## ConDens: condensation algorithm
 
 `ConDens` operates on dereplicated, abundance‑sorted consensus sequences (*children*) {c<sub>1</sub>, c<sub>2</sub>, …, c<sub>n</sub>} with abundances {a<sub>1</sub>, a<sub>2</sub>, …, a<sub>n</sub>}, where a<sub>1</sub> ≥ a<sub>2</sub> ≥ … ≥ a<sub>n</sub>.
@@ -141,9 +139,9 @@ The most abundant child becomes the first parent:
 ##### Parent–child scoring function
 
 For each candidate parent p<sub>i</sub> of a given child s<sub>j</sub>,
-ConDens computes the score:
+ConDens computes score 𝒮(p<sub>i</sub>, s<sub>j</sub>) as:
 
-> ℓ(p<sub>i</sub>, s<sub>j</sub>) = log A<sub>i</sub> − (α · d(p<sub>i</sub>, s<sub>j</sub>)<sup>γ</sup> + β)
+> 𝒮(p<sub>i</sub>, s<sub>j</sub>) = A<sub>i</sub> · exp(−α · d(p<sub>i</sub>, s<sub>j</sub>)<sup>γ</sup> − log β)
 
 where:
 - A<sub>i</sub> is the abundance of parent p<sub>i</sub>,
@@ -155,11 +153,11 @@ where:
 
 For a given child s<sub>j</sub>, the best parent is selected as:
 
-> p*<sub>j</sub> = arg max<sub>p<sub>i</sub></sub> ℓ(p<sub>i</sub>, s<sub>j</sub>)
+> p*<sub>j</sub> = arg max<sub>p<sub>i</sub></sub> 𝒮(p<sub>i</sub>, s<sub>j</sub>)
 
 The child is assigned to this parent if:
 
-> ℓ(p*<sub>j</sub>, s<sub>j</sub>) ≥ a<sub>j</sub>
+> 𝒮(p*<sub>j</sub>, s<sub>j</sub>) ≥ a<sub>j</sub>
 
 where a<sub>j</sub> is the abundance of child s<sub>j</sub>.
 
@@ -206,9 +204,13 @@ nanoid -t 12 \
   EMBnet Journal 17(1):10-12.
   doi:[10.14806/ej.17.1.200](https://doi.org/10.14806/ej.17.1.200)
 
+---
+
 ### Citing nanoID
 
 A preprint will be available shortly.
+
+---
 
 ### License
 
