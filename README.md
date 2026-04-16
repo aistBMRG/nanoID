@@ -2,7 +2,7 @@
 ## nanoID: Reconstruction of amplicon sequence variants and species-level profiling using long amplicon reads
 
 
-`nanoID` reconstructs Amplicon Sequence Variants (AVSs) from long-read amplicon sequencing data and is applicable to medium-to-high accuracy reads generated using Oxford Nanopore Technologies (ONT) and PacBio. Its accompanying tool `nanoID_profile` combines and quantifies ASVs reconstructed from multiple samples, and also performs subsequent species-level clustering (99% identity) and quantification.
+`nanoID` reconstructs Amplicon Sequence Variants (AVSs) from long-read amplicon sequencing data and is applicable to medium-to-high accuracy reads generated using Oxford Nanopore Technologies (ONT) and PacBio. Its accompanying tool `nanoID_profile` enables species-level profiling by greedy clustering of the ASVs at 99% sequence identity, and robust quantification of the species-level operational taxonomic units (OTUs) using Emu (Expectation–Maximization-based taxonomic Unit profiling).
 
 ---
 
