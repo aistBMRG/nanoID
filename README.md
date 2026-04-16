@@ -77,15 +77,15 @@ nanoid_profile -t 12 -i nanoid -o nanoid_profile
 
 2. **Read partitioning**  
    Reads are divided into minimally overlapping partitions.  
-   <span style="color:grey">By default, nanoID divides the reads into 2 non‑overlapping subsets.</span>
+   > By default, nanoID divides the reads into 2 non‑overlapping partitions.
 
 3. **Near‑neighbor identification**  
-   For each partition, near‑neighbor reads are identified using [VSEARCH](https://github.com/torognes/vsearch) (`--usearch_global` command).
+   For each partition, near‑neighbor reads are identified using [VSEARCH](https://github.com/torognes/vsearch) (`--usearch_global`).
 
 4. **Consensus sequence generation**  
    For each read within a partition, a consensus sequence is generated from its near‑neighbors using the
    [abPOA](https://github.com/yangao07/abpoa) partial‑order alignment algorithm.  
-   <span style="color:grey"By default, nanoID uses 3 near-neighbors per read such that each consensus is derived from 4 reads.</span>
+   > By default, nanoID uses 3 near-neighbors per read such that each consensus is derived from 4 reads.
 
 5. **Denoising/condensing of consensus sequences**  
    Consensus sequences are denoised/condensed within each partition using nanoID’s *ConDens* algorithm, a greedy abundance‑based approach built on a phenomenological error model inspired by [UNOISE3](https://www.biorxiv.org/content/10.1101/081257v1).
@@ -110,7 +110,7 @@ nanoid_profile -t 12 -i nanoid -o nanoid_profile
    Low abundance or infrequent ASVs are optionally removed.
 
 3. **Clustering of ASVs in operational taxonomic units (OTUs)**  
-   ASVs are greedily clustered in OTUs using VSEARCH's --cluster_smallmem at a global sequence identity of 99%, representing largely species-level clusters.
+   ASVs are greedily clustered in OTUs using VSEARCH's `--cluster_smallmem` at a global sequence identity of 99%, representing largely species-level clusters.
 
 4. **Quantification of OTU abundances**  
    OTUs are quantified using the processed reads with [Emu](https://www.nature.com/articles/s41592-022-01520-4).
