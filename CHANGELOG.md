@@ -6,4 +6,4 @@ All notable changes to nanoID will be documented in this file.
 
 ### Added
 
-First public release of nanoID.
+Initial release.
