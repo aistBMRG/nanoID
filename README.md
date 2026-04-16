@@ -43,25 +43,25 @@ nanoid_profile -h
    Raw reads are processed with **Cutadapt** for primer trimming and quality/lenghth filtering.
 
 2. **Read partitioning**  
-   Processed reads are divided into minimally overlapping partitions.  
+   Reads are divided into minimally overlapping partitions.  
    *By default, nanoID divides the reads into 2 non‑overlapping subsets.*
 
 3. **Near‑neighbor identification**  
-   For each partition, near‑neighbor reads are identified using **VSEARCH** (`--usearch_global`).
+   For each partition, near‑neighbor reads are identified using VSEARCH (`--usearch_global`).
 
 4. **Consensus sequence generation**  
-   For each read within a partitioon, a consensus sequence is generated from its near‑neighbors using the
+   For each read within a partition, a consensus sequence is generated from its near‑neighbors using the
    abPOA partial‑order alignment algorithm.  
-   *By default, nanoID uses 3 near-neighbors per read such that each consensus sequence is derived from 4 reads.*
+   *By default, nanoID uses 3 near-neighbors per read such that each consensus is derived from 4 reads.*
 
 5. **Denoising/condensing of consensus sequences**  
-   Consensus sequences are denoised/condensed within each subset using nanoID’s *ConDens* algorithm, a greedy abundance‑based approach built on a phenomenological error model inspired by UNOISE3 (https://www.biorxiv.org/content/10.1101/081257v1).
+   Consensus sequences are denoised/condensed within each partition using nanoID’s *ConDens* algorithm, a greedy abundance‑based approach built on a phenomenological error model inspired by [UNOISE3](https://www.biorxiv.org/content/10.1101/081257v1).
 
 6. **Recovery of ASVs**  
    Denoised/condensed consensus sequences consistently observed across partitions are retained as amplicon sequence variants (ASVs).
 
 7. **Quantification of ASVs**  
-   Abundances of each ASV are estimated using nanoID’s *Quant* algorithm, involving an expectation–maximization–like procedure to resolve read assignments.
+   ASV abundances are estimated using nanoID’s *Quant* algorithm,an expectation–maximization–like procedure to resolve read assignments.
 
 8. **Chimera detection**  
    Putative chimeric ASVs are identified and removed using VSEARCH (`--uchime3_denovo`).
@@ -83,18 +83,20 @@ ACATAGATACAGTCTGATCGATCGTACGATCGATCGATCGATCGATCGATTGA
 
 ### Description of nanoID_profile workflow
 
-1. **Dereplication of ASVs accross samples** 
+1. **Dereplication of ASVs accross samples**  
    Low abundance or infrequent ASVs are optionally removed.
 
-2. **Clustering of ASVs in operational taxonomic units (OTUs)**  
-   ASVs are greedily clustered in species-level OTUs VSEARCH's --cluster_smallmem at a global sequence identity of 99%, representing largely species-level OTUs.
+3. **Clustering of ASVs in operational taxonomic units (OTUs)**  
+   ASVs are greedily clustered in OTUs using VSEARCH's --cluster_smallmem at a global sequence identity of 99%, representing largely species-level clusters.
 
-3. **Quantification of OTU abundances** 
-   The above generated OTUs are quantified using the processed reads with Emu (https://www.nature.com/articles/s41592-022-01520-4).
+4. **Quantification of OTU abundances**  
+   OTUs are quantified using the processed reads with [Emu](https://www.nature.com/articles/s41592-022-01520-4).
 
 #### Output
 
 The main output of `nanoID_profile` is a fasta file of OTU representatives and count table.
+
+---
 
 ## Quick start
 
@@ -102,9 +104,9 @@ The main output of `nanoID_profile` is a fasta file of OTU representatives and c
 nanoid -t 12 -i input.fastq -o nanoid
 ```
 
-## Detailed usage
+---
 
-## Benchmarking data
+## Benchmarking/test data
 
 nanoID was tested using publically available sequencing data for Zymo's mock community, with default settings except for Cutadapt.
 
@@ -113,6 +115,19 @@ nanoid -t 12 \
 --cutadapt_f_primer    AGRGTTYGATYMTGGCTCAG \
 --cutadapt_r_primer_rc TGYACWCACCGCCCGTC
 ```
+
+---
+
+## Ongoing
+
+#### Justification of defaults for ConDens
+
+The ConDens algorithm performs greedy, abundance‑aware condensation of consensus sequences (conseqs).
+
+##### β (beta = 8)
+The parameter **β** controls the minimal over‑abundance required for a conseq to considered as a possible parent for a given child when divergence is negligible. Formally, β imposes a baseline penalty through the term `exp(-log(β)) = 1/β`, and can be interpreted as a **prior on parent support**: a candidate parent must be substantially more abundant than a candidate child before sequence similarity is even considered.
+
+---
 
 ## Third-party attributions
 
