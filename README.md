@@ -37,7 +37,36 @@ nanoid_profile -h
 
 ---
 
-### Description of nanoID workflow
+### Quick start
+
+**Basic usage**
+```sh
+nanoid -t 12 -i input.fastq -o nanoid
+```
+
+For combined analysis of multiple samples, the output of `nanoid` can be written to a single output directory.
+
+```sh
+mkdir nanoid
+
+for fq in *.fastq; do
+    nanoid -t 12 -i "$fq" -o nanoid
+done
+
+## with GNU parallel
+
+parallel -j 4 \
+    "nanoid -t 12 -i {} -o nanoid" \
+    ::: *.fastq
+```
+
+```sh
+nanoid_profile -t 12 -i nanoid -o nanoid_profile
+```
+
+---
+
+#### Description of nanoID workflow
 
 1. **Read preprocessing** (*optional*)  
    Raw reads are processed with **Cutadapt** for primer trimming and quality/lenghth filtering.
@@ -66,22 +95,12 @@ nanoid_profile -h
 8. **Chimera detection**  
    Putative chimeric ASVs are identified and removed using VSEARCH (`--uchime3_denovo`).
 
-#### Output
+##### Output
 
-The main output of `nanoID` is a fasta file of ASV sequences with USEARCH/VSEARCH-style size annotations.
+* Fasta file `{basename}_nanoid_nonchimeras.fasta` of ASV sequences with USEARCH/VSEARCH-style size annotations.
+* Log file `{basename}_nanoid.log`
 
-```
->condenseq_1;size=3535
-ACATAGATACAGTCTGATCGATCGTACGATCGATCGATCGATCGATCGATCGA
->condenseq_2;size=2148
-ACATAGATACAGTCTGATCGATTGTACGATCGATCGATCGATCGATCGATCGA
->condenseq_3;size=987
-ACATAGATACAGTCTGATCGATCGTACGATCGATCGATCGATCGATCGATCAA
->condenseq_4;size=412
-ACATAGATACAGTCTGATCGATCGTACGATCGATCGATCGATCGATCGATTGA
-```
-
-### Description of nanoID_profile workflow
+#### Description of nanoID_profile workflow
 
 1. **Dereplication of ASVs accross samples**  
    Low abundance or infrequent ASVs are optionally removed.
@@ -92,21 +111,71 @@ ACATAGATACAGTCTGATCGATCGTACGATCGATCGATCGATCGATCGATTGA
 4. **Quantification of OTU abundances**  
    OTUs are quantified using the processed reads with [Emu](https://www.nature.com/articles/s41592-022-01520-4).
 
-#### Output
+##### Output
 
-The main output of `nanoID_profile` is a fasta file of OTU representatives and count table.
-
----
-
-## Quick start
-
-```sh
-nanoid -t 12 -i input.fastq -o nanoid
-```
+* Fasta file `{basename}_nanoid_centroids.fasta` of ASV sequences with USEARCH/VSEARCH-style size annotations.
+* Count table `{basename}nanoid_centroids_profile_emu.tsv`
+* Log file `{basename}_nanoid_profile.log`
 
 ---
 
-## Benchmarking/test data
+#### Brief overview of ConDens
+
+## ConDens: condensation algorithm
+
+`ConDens` operates on dereplicated, abundance‑sorted consensus sequences (*children*) {c<sub>1</sub>, c<sub>2</sub>, …, c<sub>n</sub>} with abundances {a<sub>1</sub>, a<sub>2</sub>, …, a<sub>n</sub>}, where a<sub>1</sub> ≥ a<sub>2</sub> ≥ … ≥ a<sub>n</sub>.
+
+The goal is to generate a reduced set of denoised / condensed consensus
+sequences (*parents*) {p<sub>1</sub>, p<sub>2</sub>, …, p<sub>k</sub>}, with abundances {A<sub>1</sub>, A<sub>2</sub>, …, A<sub>n</sub>}, by greedily assigning children to parents based on abundance and sequence divergence. The algorithm is inspired by UNOISE3.
+
+Sequence divergence between two sequences is measured as the lenght-normalized Levenshtein edit distance:
+> d(s<sub>1</sub>, s<sub>2</sub>) = D(s<sub>1</sub>, s<sub>2</sub>) / max(|s<sub>1</sub>|, |s<sub>2</sub>|)
+
+
+##### Initialization
+
+The most abundant child becomes the first parent:
+
+> s<sub>1</sub> → p<sub>1</sub>
+
+##### Parent–child scoring function
+
+For each candidate parent p<sub>i</sub> of a given child s<sub>j</sub>,
+ConDens computes the score:
+
+> ℓ(p<sub>i</sub>, s<sub>j</sub>) = log A<sub>i</sub> − (α · d(p<sub>i</sub>, s<sub>j</sub>)<sup>γ</sup> + β)
+
+where:
+- A<sub>i</sub> is the abundance of parent p<sub>i</sub>,
+- β enforces a baseline parent‑to‑child abundance ratio (default: 8),
+- α controls the strength of the sequence divergence penalty (default: 0.5),
+- γ controls the non‑linearity of the divergence penalty (default: 1.5).
+
+##### Greedy assignment rule
+
+For a given child s<sub>j</sub>, the best parent is selected as:
+
+> p*<sub>j</sub> = arg max<sub>p<sub>i</sub></sub> ℓ(p<sub>i</sub>, s<sub>j</sub>)
+
+The child is assigned to this parent if:
+
+> ℓ(p*<sub>j</sub>, s<sub>j</sub>) ≥ a<sub>j</sub>
+
+where a<sub>j</sub> is the abundance of child s<sub>j</sub>.
+
+If no parent satisfies this condition, the child becomes a new parent:
+
+> s<sub>j</sub> → p<sub>k+1</sub>
+
+##### Parent reinforcement (optional)
+
+If parent reinforcement is enabled, accepted assignments update the parent abundance:
+
+> A<sub>p*</sub> ← A<sub>p*</sub> + a<sub>j</sub>
+
+---
+
+### Benchmarking/test data
 
 nanoID was tested using publically available sequencing data for Zymo's mock community, with default settings except for Cutadapt.
 
@@ -118,18 +187,7 @@ nanoid -t 12 \
 
 ---
 
-## Ongoing
-
-#### Justification of defaults for ConDens
-
-The ConDens algorithm performs greedy, abundance‑aware condensation of consensus sequences (conseqs).
-
-##### β (beta = 8)
-The parameter **β** controls the minimal over‑abundance required for a conseq to considered as a possible parent for a given child when divergence is negligible. Formally, β imposes a baseline penalty through the term `exp(-log(β)) = 1/β`, and can be interpreted as a **prior on parent support**: a candidate parent must be substantially more abundant than a candidate child before sequence similarity is even considered.
-
----
-
-## Third-party attributions
+### Third-party attributions
 
 `nanoID` and `nanoID_profile` rely on several third‑party tools and we recommend citing the original publications of these tools.
 
@@ -148,11 +206,11 @@ The parameter **β** controls the minimal over‑abundance required for a conseq
   EMBnet Journal 17(1):10-12.
   doi:[10.14806/ej.17.1.200](https://doi.org/10.14806/ej.17.1.200)
 
-## Citing nanoID
+### Citing nanoID
 
 A preprint will be available shortly.
 
-## License
+### License
 
 Copyright (C) 2026 Dieter Tourlousse
 
