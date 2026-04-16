@@ -73,19 +73,19 @@ nanoid_profile -t 12 -i nanoid -o nanoid_profile
 #### Description of nanoID workflow
 
 1. **Read preprocessing** (*optional*)  
-   Raw reads are processed with **Cutadapt** for primer trimming and quality/lenghth filtering.
+   Raw reads are processed with [Cutadapt](https://github.com/marcelm/cutadapt) for primer trimming and quality/lenghth filtering.
 
 2. **Read partitioning**  
    Reads are divided into minimally overlapping partitions.  
-   *By default, nanoID divides the reads into 2 non‑overlapping subsets.*
+   <span style="color:grey">By default, nanoID divides the reads into 2 non‑overlapping subsets.</span>
 
 3. **Near‑neighbor identification**  
-   For each partition, near‑neighbor reads are identified using VSEARCH (`--usearch_global`).
+   For each partition, near‑neighbor reads are identified using [VSEARCH](https://github.com/torognes/vsearch) (`--usearch_global` command).
 
 4. **Consensus sequence generation**  
    For each read within a partition, a consensus sequence is generated from its near‑neighbors using the
-   abPOA partial‑order alignment algorithm.  
-   *By default, nanoID uses 3 near-neighbors per read such that each consensus is derived from 4 reads.*
+   [abPOA](https://github.com/yangao07/abpoa) partial‑order alignment algorithm.  
+   <span style="color:grey"By default, nanoID uses 3 near-neighbors per read such that each consensus is derived from 4 reads.</span>
 
 5. **Denoising/condensing of consensus sequences**  
    Consensus sequences are denoised/condensed within each partition using nanoID’s *ConDens* algorithm, a greedy abundance‑based approach built on a phenomenological error model inspired by [UNOISE3](https://www.biorxiv.org/content/10.1101/081257v1).
