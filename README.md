@@ -149,9 +149,9 @@ ConDens computes score 𝒮(p<sub>i</sub>, s<sub>j</sub>) as:
 
 where:
 - A<sub>i</sub> is the abundance of parent p<sub>i</sub>,
-- β enforces a baseline parent‑to‑child abundance ratio (default: 8),
-- α controls the strength of the sequence divergence penalty (default: 0.5),
-- γ controls the non‑linearity of the divergence penalty (default: 1.5).
+- β enforces a baseline parent‑to‑child abundance ratio,
+- α controls the strength of the sequence divergence penalty,
+- γ controls the non‑linearity of the divergence penalty.
 
 ##### Greedy assignment rule
 
