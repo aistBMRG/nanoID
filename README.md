@@ -143,8 +143,8 @@ fasterq-dump SRR36567714
 nanoid -t 8 \
 -i SRR36567714.fastq \
 -o SRR36567714_nanoid \
---number_fastq_splits 2 \
---reads_per_split 50000 \
+--disjoint_partitions 3 \
+--max_reads_per_disjoint_partition 50000 \
 --cutadapt_f_primer    AGRGTTYGATYMTGGCTCAG \
 --cutadapt_r_primer_rc TGYACWCACCGCCCGTC
 ```
