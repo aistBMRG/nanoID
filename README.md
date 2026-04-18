@@ -88,7 +88,7 @@ nanoid_profile -t 12 -i nanoid -o nanoid_profile
    > By default, nanoID uses 3 near-neighbors per read such that each consensus is derived from 4 reads.
 
 5. **Denoising/condensing of consensus sequences**  
-   Consensus sequences are denoised/condensed within each partition using nanoID’s *ConDens* algorithm, a greedy abundance‑based approach built on a phenomenological error model inspired by [UNOISE3](https://www.biorxiv.org/content/10.1101/081257v1).
+   Consensus sequences are denoised/condensed within each partition using nanoID’s *ConDens* algorithm.
 
 6. **Recovery of ASVs**  
    Denoised/condensed consensus sequences consistently observed across partitions are retained as amplicon sequence variants (ASVs).
@@ -125,55 +125,7 @@ nanoid_profile -t 12 -i nanoid -o nanoid_profile
 
 ## ConDens: condensation algorithm
 
-`ConDens` operates on dereplicated, abundance‑sorted consensus sequences (*children*) {c<sub>1</sub>, c<sub>2</sub>, …, c<sub>n</sub>} with abundances {a<sub>1</sub>, a<sub>2</sub>, …, a<sub>n</sub>}, where a<sub>1</sub> ≥ a<sub>2</sub> ≥ … ≥ a<sub>n</sub>.
 
-The goal is to generate a reduced set of denoised / condensed consensus
-sequences (*parents*) {p<sub>1</sub>, p<sub>2</sub>, …, p<sub>k</sub>}, with abundances {A<sub>1</sub>, A<sub>2</sub>, …, A<sub>n</sub>}, by greedily assigning children to parents based on abundance and sequence divergence. The algorithm is inspired by UNOISE3.
-
-Sequence divergence between two sequences is measured as the lenght-normalized Levenshtein edit distance:
-> d(s<sub>1</sub>, s<sub>2</sub>) = D(s<sub>1</sub>, s<sub>2</sub>) / max(|s<sub>1</sub>|, |s<sub>2</sub>|)
-
-
-##### Initialization
-
-The most abundant child becomes the first parent:
-
-> s<sub>1</sub> → p<sub>1</sub>
-
-##### Parent–child scoring function
-
-For each candidate parent p<sub>i</sub> of a given child s<sub>j</sub>,
-ConDens computes score 𝒮(p<sub>i</sub>, s<sub>j</sub>) as:
-
-> 𝒮(p<sub>i</sub>, s<sub>j</sub>) = A<sub>i</sub> · exp(−α · d(p<sub>i</sub>, s<sub>j</sub>)<sup>γ</sup> − log β)
-
-where:
-- A<sub>i</sub> is the abundance of parent p<sub>i</sub>,
-- β enforces a baseline parent‑to‑child abundance ratio,
-- α controls the strength of the sequence divergence penalty,
-- γ controls the non‑linearity of the divergence penalty.
-
-##### Greedy assignment rule
-
-For a given child s<sub>j</sub>, the best parent is selected as:
-
-> p*<sub>j</sub> = arg max<sub>p<sub>i</sub></sub> 𝒮(p<sub>i</sub>, s<sub>j</sub>)
-
-The child is assigned to this parent if:
-
-> 𝒮(p*<sub>j</sub>, s<sub>j</sub>) ≥ a<sub>j</sub>
-
-where a<sub>j</sub> is the abundance of child s<sub>j</sub>.
-
-If no parent satisfies this condition, the child becomes a new parent:
-
-> s<sub>j</sub> → p<sub>k+1</sub>
-
-##### Parent reinforcement (optional)
-
-If parent reinforcement is enabled, accepted assignments update the parent abundance:
-
-> A<sub>p*</sub> ← A<sub>p*</sub> + a<sub>j</sub>
 
 ---
 
