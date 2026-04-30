@@ -37,7 +37,7 @@ nanoid -h
 ```
 usage: nanoid [-h] [-v] <command> ...
 
-nanoID: Long‑read amplicon denoising and profiling
+nanoID: Long‑read amplicon denoising and species profiling
 
 options:
   -h, --help     show this help message and exit
@@ -55,11 +55,10 @@ Subcommands:
 
 **Basic usage**
 
-Run nanoid on a single sample:
+Run `nanoid condens` on a single sample:
 ```sh
 nanoid condens -i input.fastq -o nanoid_condens
 ```
-This generates per‑sample results in the specified output directory.
 
 For downstream joint profiling across multiple samples, write all `nanoid` outputs to a single directory.
 
@@ -77,7 +76,7 @@ parallel -j 4 \
     ::: *.fastq
 ```
 
-Once all samples have been processed, run `nanoid_profile` on the combined output directory.
+Once all samples have been processed, run `nanoid profile` on the combined output directory.
 ```sh
 nanoid profile -t 12 -i nanoid_condens -o nanoid_profile
 ```
@@ -92,9 +91,9 @@ reads
 [cutadapt, optional] ─ primer trimming, length/quality filtering, read orientation (--revcomp flag)
 ↓
 [N disjoint_splits]
-  ├─ split 1 ─▶ [vsearch] ─▶ [abPOA consensus, neighbors_n reads] ─▶ conseqs₁
-  ├─ split 2 ─▶ [vsearch] ─▶ [abPOA consensus, neighbors_n reads] ─▶ conseqs₂
-  └─ split N ─▶ [vsearch] ─▶ [abPOA consensus, neighbors_n reads] ─▶ conseqsₙ
+  ├─ split 1 ─▶ [vsearch, all vs. all] ─▶ [abPOA consensus, neighbors_n reads] ─▶ conseqs₁
+  ├─ split 2 ─▶ [vsearch, all vs. all] ─▶ [abPOA consensus, neighbors_n reads] ─▶ conseqs₂
+  └─ split N ─▶ [vsearch, all vs. all] ─▶ [abPOA consensus, neighbors_n reads] ─▶ conseqsₙ
 ↓
 ┌─────────────────────────────────────────────┐
   CROSS‑SPLIT CONSENSUS GRAPH
