@@ -37,7 +37,7 @@ nanoid -h
 ```
 usage: nanoid [-h] [-v] <command> ...
 
-nanoID – long‑read amplicon denoising and profiling
+nanoID: Long‑read amplicon denoising and profiling
 
 options:
   -h, --help     show this help message and exit
