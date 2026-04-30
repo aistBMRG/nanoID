@@ -84,7 +84,7 @@ nanoid_profile -t 12 -i nanoid -o nanoid_profile
 
 ---
 
-#### Schematic of `nanoid condens` workflow
+### Schematic of `nanoid condens` workflow
 
 ```
 reads
@@ -113,13 +113,12 @@ reads
 ↓
 Amplicon Sequence Variants (ASVs)
 ```
-
 ##### Output
 
-* Fasta file `{basename}_nanoid_nonchimeras.fasta` of ASV sequences with USEARCH/VSEARCH-style size annotations.
-* Log file `{basename}_nanoid.log`
+* Fasta file `{basename}_nanoid_uchime.fasta` of ASV sequences with USEARCH/VSEARCH-style size annotations.
+* Log file `{basename}_nanoid_condens.log`
 
-#### Schematic of `nanoid profile` workflow
+### Schematic of `nanoid profile` workflow
 
 ```
 ASVs
@@ -128,21 +127,20 @@ ASVs
   └─ optional abundance / prevalence filtering
 ↓
 [VSEARCH clustering]
-  └─ greedy clustering into OTUs
+  └─ greedy clustering into OTUs [nanOTUs]
      (--cluster_smallmem, 99% global identity)
 ↓
-[OTUs]
+[nanOTUs]
 ↓
 [Emu quantification]
   └─ probabilistic read assignment
 ↓
-OTU abundance profiles
+nanOTU abundance profiles
 ```
-
 ##### Output
 
-* Fasta file `{basename}_nanoid_centroids.fasta` of ASV sequences with USEARCH/VSEARCH-style size annotations.
-* Count table `{basename}nanoid_centroids_profile_emu.tsv`
+* Fasta file `{basename}_nanoid_nanotus.fasta` of OTU sequences.
+* Count table `{basename}_nanoid_nanotus_counts.tsv` with abundances estimated using Emu against the OTU sequences.
 * Log file `{basename}_nanoid_profile.log`
 
 ---
