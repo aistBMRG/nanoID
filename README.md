@@ -57,7 +57,7 @@ Subcommands:
 
 Run nanoid on a single sample:
 ```sh
-nanoid -t 12 -i input.fastq -o nanoid
+nanoid condens -i input.fastq -o nanoid_condens
 ```
 This generates per‑sample results in the specified output directory.
 
@@ -68,18 +68,18 @@ mkdir nanoid
 
 ## Using a shell loop
 for fq in *.fastq; do
-    nanoid -t 12 -i "$fq" -o nanoid
+    nanoid condens -i "$fq" -o nanoid_condens
 done
 
 ## Using GNU Parallel
 parallel -j 4 \
-    "nanoid -t 12 -i {} -o nanoid" \
+    "nanoid condens -i {} -o nanoid_condens" \
     ::: *.fastq
 ```
 
 Once all samples have been processed, run `nanoid_profile` on the combined output directory.
 ```sh
-nanoid_profile -t 12 -i nanoid -o nanoid_profile
+nanoid profile -t 12 -i nanoid_condens -o nanoid_profile
 ```
 
 ---
@@ -89,7 +89,7 @@ nanoid_profile -t 12 -i nanoid -o nanoid_profile
 ```
 reads
 ↓
-[cutadapt, optional] ─ primer trimming, length/quality filtering, orientation
+[cutadapt, optional] ─ primer trimming, length/quality filtering, read orientation (--revcomp flag)
 ↓
 [N disjoint_splits]
   ├─ split 1 ─▶ [vsearch] ─▶ [abPOA consensus, neighbors_n reads] ─▶ conseqs₁
@@ -103,7 +103,7 @@ reads
 └─────────────────────────────────────────────┘
 ↓
 [graph ascent, κ threshold]
-  OR‑across‑splits κ‑ascent
+  cross-split constrained graph ascent
 ↓
 [graph peaks] → condensed conseqs
 ↓
@@ -124,16 +124,15 @@ Amplicon Sequence Variants (ASVs)
 ASVs
 ↓
 [dereplication across samples]
-  └─ optional abundance / prevalence filtering
+  └─ optional: total count / prevalence filtering
 ↓
 [VSEARCH clustering]
   └─ greedy clustering into OTUs [nanOTUs]
-     (--cluster_smallmem, 99% global identity)
+     (--cluster_smallmem, 99% identity)
 ↓
 [nanOTUs]
 ↓
 [Emu quantification]
-  └─ probabilistic read assignment
 ↓
 nanOTU abundance profiles
 ```
@@ -155,12 +154,10 @@ fasterq-dump SRR36567714
 ```
 
 ```sh
-# nanoID with 2x 50,000 randomly selected reads, after processing using Cutadapt #
-nanoid -t 8 \
+nanoid condens -t 8 \
 -i SRR36567714.fastq \
 -o SRR36567714_nanoid \
---disjoint_partitions 3 \
---max_reads_per_disjoint_partition 50000 \
+--max_reads_per_split 20000 \
 --cutadapt_f_primer    AGRGTTYGATYMTGGCTCAG \
 --cutadapt_r_primer_rc TGYACWCACCGCCCGTC
 ```
