@@ -88,52 +88,30 @@ nanoid_profile -t 12 -i nanoid -o nanoid_profile
 
 ```
 reads
-  │
-  ▼
-[cutadapt]
-  └─ primer trimming, length / quality filtering
-  │
-  ▼
-[split × disjoint_splits]
-  └─ N disjoint read partitions
-  │
-  ├─ split 1 ──▶ [vsearch] ──▶ [abPOA consensus
-  │                               neighbors_n reads] ──▶ conseqs₁
-  │
-  ├─ split 2 ──▶ [vsearch] ──▶ [abPOA consensus
-  │                               neighbors_n reads] ──▶ conseqs₂
-  │
-  └─ split N ──▶ [vsearch] ──▶ [abPOA consensus
-                                  neighbors_n reads] ──▶ conseqsₙ
-                                   │
-                                   ▼
-                ┌──────────────────────────────────────────┐
-                        CROSS‑SPLIT CONSENSUS GRAPH       
-                  Nodes:                                  
-                    intersection(conseqs₁ … conseqsₙ)      
-                  Edges:                                  
-                    union(shared‑neighbor edges)          
-                └──────────────────────────────────────────┘
-                                   │
-                                   ▼
-                [graph ascent with κ threshold]
-                  └─ OR‑across‑splits κ‑ascent
-                     abundance‑ratio constrained
-                                   │
-                                   ▼
-                [graph peaks]
-                  → retained ASVs
-                                   │
-                                   ▼
-                [EM quantification]
-                  └─ probabilistic read assignment
-                                   │
-                                   ▼
-                [uchime3_denovo]
-                  └─ chimera detection
-                                   │
-                                   ▼
-            Amplicon Sequence Variants (ASVs)
+↓
+[cutadapt] ─ primer trimming, length/quality filtering, orientation
+↓
+[N disjoint_splits]
+  ├─ split 1 ─▶ [vsearch] ─▶ [abPOA consensus, neighbors_n reads] ─▶ conseqs₁
+  ├─ split 2 ─▶ [vsearch] ─▶ [abPOA consensus, neighbors_n reads] ─▶ conseqs₂
+  └─ split N ─▶ [vsearch] ─▶ [abPOA consensus, neighbors_n reads] ─▶ conseqsₙ
+↓
+┌─────────────────────────────────────────────┐
+  CROSS‑SPLIT CONSENSUS GRAPH
+  nodes = intersection(conseqs₁ … conseqsₙ)
+  edges = union(shared‑neighbor edges)
+└─────────────────────────────────────────────┘
+↓
+[graph ascent, κ threshold]
+  OR‑across‑splits κ‑ascent
+↓
+[graph peaks] → condensed conseqs
+↓
+[EM quantification] → read assignment
+↓
+[uchime3_denovo] → chimera removal
+↓
+Amplicon Sequence Variants (ASVs)
 ```
 
 1. **Read preprocessing** (*optional*)  
