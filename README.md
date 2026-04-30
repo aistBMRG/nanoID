@@ -2,7 +2,7 @@
 ## nanoID: Reconstruction of Amplicon Sequence Variants and Species-Level Profiling Using Long Amplicon Reads
 
 
-`nanoID` enables the reconstruction of Amplicon Sequence Variants (ASVs) from long‑read amplicon sequencing data and is applicable to medium‑ and high‑accuracy reads produced by Oxford Nanopore Technologies (ONT) and PacBio sequencing platforms. The accompanying tool, `nanoID_profile`, supports species‑level profiling through greedy clustering of ASVs at 99% sequence identity, with subsequent quantitative inference of species‑level operational taxonomic units (OTUs) using Emu.
+`nanoID` enables the reconstruction of Amplicon Sequence Variants (ASVs) from long‑read amplicon sequencing data and is applicable to medium‑ and high‑accuracy reads produced by Oxford Nanopore Technologies (ONT) and PacBio sequencing platforms. Further, `nanoID` enables robust species‑level profiling through greedy clustering of ASVs at 99% sequence identity, with subsequent quantitative inference of species‑level operational taxonomic units (OTUs) using Emu.
 
 ---
 
@@ -32,7 +32,21 @@ After installation, confirm that `nanoID` and `nanoID_profile` are available by 
 
 ```sh
 nanoid -h
-nanoid_profile -h
+```
+
+```
+usage: nanoid [-h] [-v] <command> ...
+
+nanoID – long‑read amplicon denoising and profiling
+
+options:
+  -h, --help     show this help message and exit
+  -v, --version  Show program version and exit.
+
+Subcommands:
+  <command>
+    condens      Workflow for recovering ASVs.
+    profile      Workflow for species-level profiling based on recovered ASVs.
 ```
 
 ---
@@ -70,31 +84,28 @@ nanoid_profile -t 12 -i nanoid -o nanoid_profile
 
 ---
 
-#### Description of nanoID workflow
+#### Description of `nanoid condens` workflow
 
 1. **Read preprocessing** (*optional*)  
    Raw reads are processed with [Cutadapt](https://github.com/marcelm/cutadapt) for primer trimming and quality/lenghth filtering.
 
 2. **Read partitioning**  
-   Reads are divided into minimally overlapping partitions.  
-   > By default, nanoID divides the reads into 2 non‑overlapping partitions.
+   Reads are divided into disjoint partitions.  
+   > By default, nanoID divides the reads into 3 partitions.
 
 3. **Near‑neighbor identification**  
    For each partition, near‑neighbor reads are identified using [VSEARCH](https://github.com/torognes/vsearch) (`--usearch_global`).
 
-4. **Consensus sequence generation**  
+4. **Generation of consensus sequences (conseqs)**  
    For each read within a partition, a consensus sequence is generated from its near‑neighbors using the
    [abPOA](https://github.com/yangao07/abpoa) partial‑order alignment algorithm.  
-   > By default, nanoID uses 3 near-neighbors per read such that each consensus is derived from 4 reads.
+   > By default, nanoID uses 4 near-neighbors per read such that each consensus is derived from 5 reads.
 
-5. **Denoising/condensing of consensus sequences**  
-   Consensus sequences are denoised/condensed within each partition using nanoID’s *ConDens* algorithm.
+5. **Denoising/condensing of conseqs**  
+  Conseqs are denoised/condensed using nanoID’s *Condens* algorithm. Briefly, *Condens* dereplicates consensus sequences and constructs a shared‑neighbor graph for each split, where nodes represent consensus sequences and edges reflect shared read support. A cross‑split consensus graph is then derived, retaining (i) only nodes observed in all splits and (ii) all edges observed in at least one split. This consensus graph is subsequently subjected to κ‑ascent to identify a set of well‑supported peaks (condensed conseqs), which are retained as amplicon sequence variants (ASVs). To prevent the loss of closely related ASVs that share neighbors, ascent is constrained by a minimum abundance ratio between connected nodes, defined by the parameter κ.
 
-6. **Recovery of ASVs**  
-   Denoised/condensed consensus sequences consistently observed across partitions are retained as amplicon sequence variants (ASVs).
-
-7. **Quantification of ASVs**  
-   ASV abundances are estimated using nanoID’s *Quant* algorithm,an expectation–maximization–like procedure to resolve read assignments.
+6. **Quantification of ASVs**  
+   Abundances of the ASVs are estimated using nanoID’s *Quant* algorithm, an expectation–maximization–like procedure to resolve ambiguous read assignments.
 
 8. **Chimera detection**  
    Putative chimeric ASVs are identified and removed using VSEARCH (`--uchime3_denovo`).
@@ -104,7 +115,7 @@ nanoid_profile -t 12 -i nanoid -o nanoid_profile
 * Fasta file `{basename}_nanoid_nonchimeras.fasta` of ASV sequences with USEARCH/VSEARCH-style size annotations.
 * Log file `{basename}_nanoid.log`
 
-#### Description of nanoID_profile workflow
+#### Description of `nanoid profile` workflow
 
 1. **Dereplication of ASVs accross samples**  
    Low abundance or infrequent ASVs are optionally removed.
@@ -120,12 +131,6 @@ nanoid_profile -t 12 -i nanoid -o nanoid_profile
 * Fasta file `{basename}_nanoid_centroids.fasta` of ASV sequences with USEARCH/VSEARCH-style size annotations.
 * Count table `{basename}nanoid_centroids_profile_emu.tsv`
 * Log file `{basename}_nanoid_profile.log`
-
----
-
-## ConDens: condensation algorithm
-
-
 
 ---
 
@@ -148,6 +153,7 @@ nanoid -t 8 \
 --cutadapt_f_primer    AGRGTTYGATYMTGGCTCAG \
 --cutadapt_r_primer_rc TGYACWCACCGCCCGTC
 ```
+
 This yielded <u><strong>27 non-chimeric ASVs</strong></u> 
 that perfectly matched:
 * [ZymoBIOMICS.STD.refseq.v2.fasta](https://s3.amazonaws.com/zymo-files/BioPool/ZymoBIOMICS.STD.refseq.v2.zip) reference sequences (N=17).
