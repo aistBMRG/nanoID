@@ -86,11 +86,61 @@ nanoid_profile -t 12 -i nanoid -o nanoid_profile
 
 #### Description of `nanoid condens` workflow
 
+```
+reads
+  │
+  ▼
+[cutadapt]
+  └─ primer trimming, length / quality filtering
+  │
+  ▼
+[split × disjoint_splits]
+  └─ N disjoint read partitions
+  │
+  ├─ split 1 ──▶ [vsearch] ──▶ [abPOA consensus
+  │                               neighbors_n reads] ──▶ conseqs₁
+  │
+  ├─ split 2 ──▶ [vsearch] ──▶ [abPOA consensus
+  │                               neighbors_n reads] ──▶ conseqs₂
+  │
+  └─ split N ──▶ [vsearch] ──▶ [abPOA consensus
+                                  neighbors_n reads] ──▶ conseqsₙ
+                                   │
+                                   ▼
+                ┌──────────────────────────────────────────┐
+                        CROSS‑SPLIT CONSENSUS GRAPH       
+                  Nodes:                                  
+                    intersection(conseqs₁ … conseqsₙ)      
+                  Edges:                                  
+                    union(shared‑neighbor edges)          
+                └──────────────────────────────────────────┘
+                                   │
+                                   ▼
+                [graph ascent with κ threshold]
+                  └─ OR‑across‑splits κ‑ascent
+                     abundance‑ratio constrained
+                                   │
+                                   ▼
+                [graph peaks]
+                  → retained ASVs
+                                   │
+                                   ▼
+                [EM quantification]
+                  └─ probabilistic read assignment
+                                   │
+                                   ▼
+                [uchime3_denovo]
+                  └─ chimera detection
+                                   │
+                                   ▼
+            Amplicon Sequence Variants (ASVs)
+```
+
 1. **Read preprocessing** (*optional*)  
    Raw reads are processed with [Cutadapt](https://github.com/marcelm/cutadapt) for primer trimming and quality/lenghth filtering.
 
 2. **Read partitioning**  
-   Reads are divided into disjoint partitions.  
+   Reads are divided into disjoint partitions/splits.  
    > By default, nanoID divides the reads into 3 partitions.
 
 3. **Near‑neighbor identification**  
