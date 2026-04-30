@@ -83,7 +83,7 @@ nanoid profile -t 12 -i nanoid_condens -o nanoid_profile
 
 ---
 
-### Schematic of `nanoid condens` workflow
+### Schematic of `nanoid condens`
 
 ```
 reads
@@ -117,7 +117,7 @@ Amplicon Sequence Variants (ASVs)
 * Fasta file `{basename}_nanoid_uchime.fasta` of ASV sequences with USEARCH/VSEARCH-style size annotations.
 * Log file `{basename}_nanoid_condens.log`
 
-### Schematic of `nanoid profile` workflow
+### Schematic of `nanoid profile`
 
 ```
 ASVs
