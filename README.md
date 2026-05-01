@@ -178,12 +178,13 @@ In the meantime, please cite this repository when using nanoID.
 
 ---
 
-### Changelog
+## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for a complete list of changes across releases.
 
 ---
-### Disclaimer
+
+## Disclaimer
 
 Portions of the codebase were developed with assistance from AI tools, specifically Claude AI (Sonnet 4.6) and Microsoft 365 Copilot (GPT‑5).
 
