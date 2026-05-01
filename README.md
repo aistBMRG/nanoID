@@ -28,7 +28,7 @@ rm nanoid-0.1.0.tar.gz
 
 ##### Verify installation
 
-After installation, confirm that `nanoID` and `nanoID_profile` are available by checking their help messages:
+After installation, confirm that `nanoid` is available:
 
 ```sh
 nanoid -h
@@ -78,7 +78,7 @@ parallel -j 4 \
 
 Once all samples have been processed, run `nanoid profile` on the combined output directory.
 ```sh
-nanoid profile -t 12 -i nanoid_condens -o nanoid_profile
+nanoid profile -i nanoid_condens -o nanoid_profile
 ```
 
 ---
