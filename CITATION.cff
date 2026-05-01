@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use nanoID in your research, please cite it as below."
 
-title: "nanoID: Accurate and sensitive reconstruction of amplicon sequence variants from long-read amplicons"
+title: "nanoID"
 
 type: software
 
@@ -20,6 +20,7 @@ keywords:
   - nanopore sequencing
   - long-read amplicons
   - amplicon sequence variants
-  - ONT and PacBio
+  - Oxford Nanopore Technologies
+  - PacBio
   - microbiome
   - bioinformatics
