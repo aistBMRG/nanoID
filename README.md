@@ -249,7 +249,7 @@ fasterq-dump SRR36567714
 ```
 
 ```sh
-nanoid condens -t 8 \
+nanoid condens \
 -i SRR36567714.fastq \
 -o SRR36567714_nanoid \
 --max_reads_per_split 20000 \
