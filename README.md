@@ -7,7 +7,7 @@ In addition to ASV reconstruction, `nanoID` enables robust species‑level profi
 
 ---
 
-### Installation
+## Installation
 
 The recommended way to install `nanoID` and its dependencies is via **conda** or **mamba**.
 
@@ -52,7 +52,7 @@ Subcommands:
 
 ---
 
-### Quick start
+## Quick start
 
 **Basic usage**
 
@@ -144,13 +144,13 @@ nanOTU abundance profiles
 
 ---
 
-### Benchmarking/test data
+## Benchmarking/test data
 
 In preparation.
 
 ---
 
-### Third-party attributions
+## Third-party attributions
 
 `nanoID` rely on several third‑party tools and we recommend citing the original publications of these tools.
 
@@ -171,14 +171,14 @@ In preparation.
 
 ---
 
-### Citation
+## Citation
 
 A manuscript describing nanoID is in preparation, and a preprint will be released shortly.  
 In the meantime, please cite this repository when using nanoID.
 
 ---
 
-## Changelog
+### Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for a complete list of changes across releases.
 
@@ -189,7 +189,7 @@ Portions of the codebase were developed with assistance from AI tools, specifica
 
 ---
 
-### License
+## License
 
 Copyright (C) 2026 Dieter Tourlousse
 
