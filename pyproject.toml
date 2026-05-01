@@ -31,8 +31,10 @@ dependencies = [
 ]
 
 [project.scripts]
-nanoid = "nanoid.nanoid_main:main"
-nanoid_profile = "nanoid.nanoid_profile:main"
+nanoid = "nanoid.cli:main"
 
 [tool.setuptools.dynamic]
 version = { attr = "nanoid._version.__version__" }
+
+[tool.setuptools]
+include-package-data = false
