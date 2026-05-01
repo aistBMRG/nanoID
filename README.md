@@ -173,8 +173,8 @@ In preparation.
 
 ### Citation
 
-A manuscript describing **nanoID** is in preparation, and a preprint will be released shortly.  
-In the meantime, please cite this repository when using nanoID in academic work.
+A manuscript describing nanoID is in preparation, and a preprint will be released shortly.  
+In the meantime, please cite this repository when using nanoID.
 
 ---
 
