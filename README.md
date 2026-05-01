@@ -171,9 +171,10 @@ In preparation.
 
 ---
 
-### Publication
+### Citation
 
-A preprint will be available shortly.
+A manuscript describing **nanoID** is in preparation, and a preprint will be released shortly.  
+In the meantime, please cite this repository when using nanoID in academic work.
 
 ---
 
