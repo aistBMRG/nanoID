@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use nanoID in your research, please cite it as below."
+
+title: "nanoID: Accurate and sensitive reconstruction of amplicon sequence variants from long-read amplicons"
+
+type: software
+
+authors:
+  - family-names: Tourlousse
+    given-names: Dieter M.
+
+version: "0.1.0"
+date-released: 2026-05-01
+
+license: GPL-3.0-or-later
+
+repository-code: "https://github.com/aistBMRG/nanoID"
+
+keywords:
+  - nanopore sequencing
+  - long-read amplicons
+  - amplicon sequence variants
+  - ONT and PacBio
+  - microbiome
+  - bioinformatics
