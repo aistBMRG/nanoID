@@ -241,26 +241,7 @@ nanOTU abundance profiles
 
 ### Benchmarking/test data
 
-We applied `nanoID` to ONT sequencing data (R10.4.1 flowcell, basecalling with [Dorado](https://github.com/nanoporetech/dorado) in super accuracy mode, model sup@5.2.0) for the ZymoBIOMICS Microbial Community DNA Standard (catalog no. D6305), as described by [Riisgaard-Jensen et al.](https://www.biorxiv.org/content/10.64898/2026.02.26.708165v1). Data for replicate 1 was obtained from SRA under accession number [SRR36567714](https://www.ncbi.nlm.nih.gov/sra/?term=SRR36567714). 
-
-```sh
-prefetch SRR36567714
-fasterq-dump SRR36567714
-```
-
-```sh
-nanoid condens \
--i SRR36567714.fastq \
--o SRR36567714_nanoid \
---max_reads_per_split 20000 \
---cutadapt_f_primer    AGRGTTYGATYMTGGCTCAG \
---cutadapt_r_primer_rc TGYACWCACCGCCCGTC
-```
-
-This yielded <u><strong>27 non-chimeric ASVs</strong></u> 
-that perfectly matched:
-* [ZymoBIOMICS.STD.refseq.v2.fasta](https://s3.amazonaws.com/zymo-files/BioPool/ZymoBIOMICS.STD.refseq.v2.zip) reference sequences (N=17).
-* Sequences from same species in NCBI (N=10), suggesting that they represented genuine sequences.
+In preparation.
 
 ---
 
