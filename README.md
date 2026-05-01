@@ -171,7 +171,7 @@ In preparation.
 
 ---
 
-### Citing nanoID
+### Publication
 
 A preprint will be available shortly.
 
