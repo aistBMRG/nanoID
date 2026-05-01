@@ -7,7 +7,7 @@ In addition to ASV reconstruction, `nanoID` enables robust species‑level profi
 
 ---
 
-## Installation
+## 🚀 Installation
 
 The recommended way to install `nanoID` and its dependencies is via **conda** or **mamba**.
 
@@ -52,7 +52,7 @@ Subcommands:
 
 ---
 
-## Quick start
+## ⚡ Quick start
 
 🖥️ **Basic usage**
 
