@@ -54,7 +54,7 @@ Subcommands:
 
 ## Quick start
 
-**Basic usage**
+🖥️ **Basic usage**
 
 Run `nanoid condens` on a single sample:
 ```sh
