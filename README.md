@@ -166,19 +166,11 @@ that perfectly matched:
 * [ZymoBIOMICS.STD.refseq.v2.fasta](https://s3.amazonaws.com/zymo-files/BioPool/ZymoBIOMICS.STD.refseq.v2.zip) reference sequences (N=17).
 * Sequences from same species in NCBI (N=10), suggesting that they represented genuine sequences.
 
-```sh
-nanoid_profile -t 8 \
--i SRR36567714_nanoid \
--o SRR36567714_nanoid_profile \
---cluster_id 0.99
-```
-This yielded **9** OTUs.
-
 ---
 
 ### Third-party attributions
 
-`nanoID` and `nanoID_profile` rely on several third‑party tools and we recommend citing the original publications of these tools.
+`nanoID` rely on several third‑party tools and we recommend citing the original publications of these tools.
 
 * Rognes T, Flouri T, Nichols B, Quince C, Mahé F (2016).
   VSEARCH: a versatile open source tool for metagenomics.
@@ -200,6 +192,12 @@ This yielded **9** OTUs.
 ### Citing nanoID
 
 A preprint will be available shortly.
+
+---
+
+### Disclaimer
+
+Portions of the codebase were developed with assistance from AI tools, specifically Claude AI (Sonnet 4.6) and Microsoft 365 Copilot (GPT‑5).
 
 ---
 
