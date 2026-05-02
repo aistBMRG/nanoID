@@ -5,6 +5,14 @@
 `nanoID` is a new bioinformatics tool for accurate and sensitive reconstruction of amplicon sequence variants (ASVs) from long‑read amplicon sequencing data. The method is applicable to medium‑ and high‑accuracy reads generated using Oxford Nanopore Technologies (ONT) and PacBio sequencing platforms.
 In addition to ASV reconstruction, `nanoID` enables robust species‑level profiling by greedy clustering of the reconstructed ASVs at 99% sequence identity, followed by quantification of the species‑level operational taxonomic units (OTUs) using Emu.
 
+⚠️ Although `nanoID condens` can recover ASVs, direct ASV‑level analysis is not recommended for full‑length 16S rRNA gene data due to extensive splitting of genomes, as has been stressed by [Schloss](https://journals.asm.org/doi/full/10.1128/msphere.00191-21) even for short 16S rRNA gene sequence amplicons, and potential for variable resolution of closely related ASVs across samples. 
+
+Accordingly, we suggest one of the following strategies for downstream analysis:
+
+- Cluster ASVs into approximate species‑level OTUs and quantify them using `nanoid profile`. This enables feature‑level analyses (e.g. differential abundance testing) independent of taxonomy, while operating at a biologically meaningful level of resolution.
+- Taxonomically annotate ASVs and aggregate abundance tables by taxonomy.
+- ✅ Combined approach (preferred and common in tradtional pipleines). Apply `nanoid profile` to generate OTU‑level abundance tables, then assign taxonomy based on representative OTU sequences. Downstream analyses can be performed either directly on OTU abundances or after collapsing features at selected taxonomic ranks.
+
 ---
 
 ## 🚀 Installation
