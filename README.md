@@ -14,7 +14,7 @@ Accordingly, we suggest one of the following strategies for downstream analysis:
 
 - Cluster ASVs into approximate species‑level OTUs and quantify them using `nanoid profile`. This enables feature‑level analyses (e.g. differential abundance testing) independent of taxonomy, while operating at a biologically meaningful level of resolution.
 - Taxonomically annotate ASVs and aggregate abundance tables by taxonomy.
-- ✅ Combined approach (preferred and common in tradtional pipleines). Apply `nanoid profile` to generate OTU‑level abundance tables, then assign taxonomy based on representative OTU sequences. Downstream analyses can be performed either directly on OTU abundances or after collapsing features at selected taxonomic ranks.
+- 🧩 **Combined approach (preferred and common in traditional pipelines).** Apply `nanoid profile` to generate OTU‑level abundance tables, then assign taxonomy based on representative OTU sequences. Downstream analyses can be performed either directly on OTU/feature abundances or after collapsing features at selected taxonomic ranks.
 
 ---
 
@@ -33,9 +33,9 @@ mamba create -n nanoid -c conda-forge -c bioconda \
 mamba activate nanoid
 
 # Download and install nanoID
-wget https://github.com/aistBMRG/nanoID/releases/download/v0.1.0/nanoid-0.1.0.tar.gz
-pip install --no-build-isolation --no-deps nanoid-0.1.0.tar.gz
-rm nanoid-0.1.0.tar.gz
+wget https://github.com/aistBMRG/nanoID/releases/download/v0.2.0/nanoid-0.1.0.tar.gz
+pip install --no-build-isolation --no-deps nanoid-0.2.0.tar.gz
+rm nanoid-0.2.0.tar.gz
 ```
 
 ##### Verify installation
