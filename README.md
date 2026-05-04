@@ -26,7 +26,7 @@ The recommended way to install `nanoID` and its dependencies is via **conda** or
 # Create a dedicated environment and install dependencies
 # Note: Emu is optional and only required for species-level profiling
 mamba create -n nanoid -c conda-forge -c bioconda \
-    python=3.10 numpy scipy pandas biopython joblib rapidfuzz pyabpoa \
+    python=3.10 numpy scipy pandas biopython joblib rapidfuzz pyabpoa kneed \
     vsearch cutadapt emu
 
 # Activate the environment
